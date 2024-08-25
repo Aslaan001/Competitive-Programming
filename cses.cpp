@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+ 
+
+ int query(int n){
+
+  cout<<"? "<<n<<endl;
+  int k;
+  cin>>k;
+
+  return k;
+ }
+
+
+ 
+ 
+ 
+int main() {
+ 
+ 
+  int n;
+
+  cin>>n;
+
+
+  int l=1,h=n;
+
+  int mid=1;
+
+
+
+
+  
+
+
+  while(l<=h){
+
+     mid=(l+h)/2;
+
+
+    int a,b,c;
+    
+
+    if(mid-1==0){
+      a=1e9;
+    }
+    else{
+     a=query(mid-1);
+    }
+
+
+     b=query(mid);
+
+    if(mid+1==n+1){
+      c=1e9;
+    }
+
+    else{
+     c=query(mid+1);
+    }
+
+
+
+    if(a>b && b<c){
+      break;
+    }
+
+    if(a<b){
+      h=mid-1;
+    }
+
+    else{
+      l=mid+1;
+    }
+   
+
+
+    
+
+    
+  }
+
+  
+  cout<<"! "<<mid<<endl;
+  
+  
+ 
+ 
+   
+}
