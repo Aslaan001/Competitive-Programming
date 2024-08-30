@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+ 
+
+
+bool fun(double x,vector<int>&v1,int k){
+     
+
+     long long ans=0;
+
+     for(auto a:v1){
+        ans=ans+a/x;
+       
+     }
+     
+      if(ans>=k){
+        return 1;
+     }
+
+
+     
+
+     return 0;
+}
+ 
+
+
+
+
+
+
+
+int main() {
+
+    int n;
+
+    int k;
+
+    cin>>n>>k;
+
+    vector<int>v1(n);
+
+    for(int i=0;i<n;i++){
+        cin>>v1[i];
+    }
+
+
+    double l=0,h=1e7,err=1e-7,ans=0;
+
+
+    while(l<h-err){
+
+
+        double mid=(l+h)/2;
+
+        if(fun(mid,v1,k)==1){
+          ans=mid;
+          l=mid+err;
+
+        }
+
+        else{
+            h=mid-err;
+        }
+    }
+
+    cout<<setprecision(7)<<fixed<<ans<<endl;
+
+    
+
+
+    
+
+   
+}
