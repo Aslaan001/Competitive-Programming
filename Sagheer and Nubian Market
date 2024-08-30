@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long int
+
+
+int pre(vector<int>&v1,int x,int s){
+   
+
+   int k=0;
+vector<int> v2;
+   for(int i=0;i<v1.size();i++){
+     // k=k+v1[i]+x*(i+1);
+   v2.push_back(v1[i]+x*(i+1));
+   }
+sort(v2.begin(),v2.end());
+for(int i=0;i<x;i++){
+k=k+v2[i];
+if(k>s){return k;}
+}
+return k;
+
+   
+
+   return k;
+
+
+}
+
+
+
+
+
+void fun(vector<int>&v1,int s){
+  
+
+  int l=1;
+  int h=v1.size();
+
+  int item=0;
+  int min_cost=0;
+
+
+
+  while(l<=h){
+   
+
+   int mid=(l+h)/2;
+   int cost=pre(v1,mid,s);
+// cout<<mid<<" "<<cost<<" "<<s<<endl;
+   if(cost<=s){
+    item=mid;
+    // min_cost=s-cost;
+   min_cost=cost;
+    l=mid+1;
+   }
+
+
+   else{
+    h=mid-1;
+   }
+
+
+  }
+
+
+  cout<<item<<" "<<min_cost<<endl;
+
+}
+
+
+
+ 
+signed main() {
+ 
+ int n,s;
+
+ cin>>n>>s;
+
+ vector<int>v1(n,0);
+
+ for(int i=0;i<n;i++){
+    cin>>v1[i];
+ }
+
+
+ fun(v1,s);
+
+
+  
+ 
+   
+}
