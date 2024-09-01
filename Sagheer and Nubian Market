@@ -3,7 +3,7 @@ using namespace std;
 #define int long long int
 
 
-int pre(vector<int>&v1,int x,int s){
+int pre(vector<int>&v1,int x,int s){ 
    
 
    int k=0;
