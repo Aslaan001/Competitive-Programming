@@ -1,0 +1,143 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+void swap(multiset<int>&m1,multiset<int>&m2){
+ 
+     m2.insert(*m1.rbegin());
+     m1.insert(*m2.begin());
+     m1.erase(m1.find(*m1.rbegin()));
+     m2.erase(m2.find(*m2.begin()));
+    
+}
+ 
+ 
+int count(multiset<int>&m1,multiset<int>&m2,int k){
+   int ans=0;
+ 
+   for(auto a:m1){
+      ans=ans+abs(a-k);
+   }
+ 
+   for(auto a:m2){
+      ans=ans+abs(a-k);
+   }
+ 
+   return ans;
+}
+ 
+vector<int> solve(vector<int>&nums,int k){
+ 
+ vector<int>ans;
+ 
+        multiset<int>m1,m2;
+ 
+        for(int i=0;i<k;i++){
+            m1.insert(nums[i]);
+ 
+            if(m1.size()>m2.size()+1){
+ 
+                m2.insert(*m1.rbegin());
+                m1.erase(m1.find(*m1.rbegin()));
+ 
+            }
+ 
+            if( m1.size()>0 && m2.size()>0 && *m1.rbegin()>*m2.begin()){  // order maintain 
+            swap(m1,m2);
+            }
+ 
+        }
+ 
+       
+ 
+        if(k%2==0){
+            long long  a=*m1.rbegin();            // calculating Medians 
+            long long  b=*m2.begin();
+ 
+            long long  l=min(a,b);
+ 
+            // ans.push_back(count(m1,m2,l));
+ 
+            ans.push_back(l);
+        }
+        else{
+            double l=*m1.rbegin();
+            ans.push_back(l);
+        }
+ 
+ 
+ 
+ 
+ 
+        for(int i=k;i<nums.size();i++){
+            m1.insert(nums[i]);           // insert 
+ 
+            if(m1.find(nums[i-k])!=m1.end()) m1.erase(m1.find(nums[i-k]));   // erase 
+            else m2.erase(m2.find(nums[i-k]));
+ 
+ 
+            if(m1.size()>m2.size()+1){
+ 
+                m2.insert(*m1.rbegin());
+                m1.erase(m1.find(*m1.rbegin()));
+ 
+            }
+ 
+            if( m1.size()>0 && m2.size()>0 && *m1.rbegin()>*m2.begin()){  // order maintain 
+            swap(m1,m2);
+            }
+ 
+ 
+            // calculating medians 
+ 
+           
+            if(k%2==0){
+            long long  a=*m1.rbegin();
+            long long  b=*m2.begin();
+ 
+            long long  l=min(a,b);
+ 
+            ans.push_back(l);
+        }
+        else{
+            long long  l=*m1.rbegin();
+            ans.push_back(l);
+        }
+ 
+ 
+ 
+        }
+ 
+        
+ 
+ 
+        return ans;
+}
+ 
+  
+ 
+ 
+ 
+ 
+ 
+int main() {
+ 
+ int n,k;
+ 
+ cin>>n>>k;
+ 
+ vector<int>v1(n);
+ 
+ for(int i=0;i<n;i++){
+    cin>>v1[i];
+ }
+ 
+ 
+ vector<int>ans=solve(v1,k);
+ 
+ for(auto a:ans) cout<<a<<" ";
+ 
+ 
+  
+ 
+   
+}
