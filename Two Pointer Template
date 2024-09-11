@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+ 
+ 
+ int fun(vector<long long >&nums,long long  k){
+ 
+    long long sum=0;
+    
+ 
+    long long  i=0;
+    long long  j=0;
+ 
+    long long  m=0;
+ 
+    while(j<nums.size()){
+       sum+=nums[j];
+ 
+       
+ 
+       if(sum>k){
+        while(sum>k){
+          sum-=nums[i];
+          i++;
+        }
+       }
+
+       m=max(m,j-i+1);
+ 
+ 
+       j++;
+    }
+ 
+    return m;
+ }
+ 
+ 
+  int main(){
+ 
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
+    #endif
+ 
+ 
+    long long n,s;
+ 
+    cin>>n>>s;
+ 
+    vector<long long>v1(n);
+ 
+ 
+ 
+    for(long long i=0;i<n;i++){
+      cin>>v1[i];
+    }
+ 
+ 
+   //sort(v1.begin(),v1.end());
+ 
+   //for(auto a:v1) cout<<a<<" ";
+ 
+ 
+    cout<<fun(v1,s);
+ 
+    
+ 
+ 
+ 
+   
+    
+ 
+ 
+  }
