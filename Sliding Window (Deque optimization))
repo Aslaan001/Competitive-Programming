@@ -1,1 +1,7 @@
-b
+// Deque optimization is basically used for maintaining elemnts in a sorted order for a given condition and main point is that it maintain indixes in sorted order not elemnts  
+
+while(!d1.empty() && v1[d1.back()]>=sum){        sum here is the condition to satisfy 
+               d1.pop_back();
+           }
+
+d1.push_back(i);
