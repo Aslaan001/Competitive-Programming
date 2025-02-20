@@ -254,67 +254,223 @@ vector<int> topological_sort_bfs(vector<int>adj[],vector<int>&indeg,int s,int n)
 
 
 
+// single source shortest Distance to all node in DAG (Directed Acyclic Grapg)
+vector<int> shortest_distance_Directed(vector<pair<int,int>>adj[],int n,int source){
+      // first find the topo order using any algo bfs/kahn's algo 
+
+      vector<int>vis(n+1,0);
+      stack<int>s1;
+
+      // call dfs topsort with slight chnage with weights adj list;
+      
+      //dfs(adj,vis,0,s1);
+
+      vector<int>dist(n,1e9);
+      
+      dist[source]=0;
 
 
+      while(!s1.empty()){
+            int node=s1.top();
+            s1.pop();
 
-  int main(){
- 
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
- 
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
-    #endif
+            for(auto it:adj[node]){
+                  int v=it.first;
+                  int c=it.second;
 
+                  dist[v]=min(dist[v],dist[node]+c);
+            }
+      
+      }
 
-    //cout<<"testing";
+      for(auto &a:dist){
+            if(a==1e9) a=-1;
+      }
 
-
-    
-
-    int n=100;
-
-
-    vector<int>vis(n+1,0);
-
-    vector<int>adj[n+1];
-
-    vector<int>ans;
-
-    adj[1]={2,6};
-    adj[2]={1,3,4};
-    adj[6]={5,9,1};
-    adj[3]={};
-    adj[4]={2,11};
-    adj[5]={6,11};
-    adj[9]={};
-
-
-    bfs(ans,adj,vis,1);
-
-    for(auto a:ans) cout<<a<<" ";
-
-    ans.clear();
-    cout<<"\n";
-
-    dfs(ans,adj,vis,1);
-
-    for(auto a:ans) cout<<a<<" ";
-
-    
-    
-
-    
-
-
+      return dist;
 }
+
+
+
+
+
+
+
+
+// (Dikstra)   Single Souce Shortest Path (But Without -ve Edges )
+#define p pair<int, int>
+vector<int> dijkstra(vector<vector<pair<int, int>>> &adj, int src) {
+      int v=adj.size();
+      vector<int> dis(v, 999999);
+      
+      
+      priority_queue<p, vector<p>, greater<p>> q;
+      q.push({0,src}); //distance from src to src is 0
+      dis[src]=0;
+      
+      while(!q.empty()){
+          int d=q.top().first;
+          int i=q.top().second;
+          q.pop();
+          
+          // if(vis[i]) continue;
+          // vis[i]=true;
+          
+          for(auto it: adj[i]){
+              if(dis[it.first] > dis[i] + it.second){
+                  dis[it.first]=dis[i] + it.second;
+                  q.push({dis[it.first], it.first});
+              }
+          }
+      }
+      
+      return dis;
+  }
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  // Dijistra On Grid With Unit Cost 
+
+#define PII pair<int, int>
+#define PIII pair<int, PII>
+#define MIN_HEAP priority_queue<PIII, vector<PIII>, greater<PIII>>
+
+void matrix_dijistra(int i, int j, vector<vector<int>>& dis, vector<vector<int>>& grid) {
+      dis[i][j] = 1;
+  
+      MIN_HEAP q;
+  
+      q.push({1, {i, j}});
+  
+      int n = grid.size();
+      int m = grid[0].size();
+  
+      while (q.size() > 0) {
+          int r = q.top().second.first;
+          int c = q.top().second.second;
+  
+          int d = q.top().first;
+  
+          q.pop();
+  
+          // Now position from where we are reaching
+  
+          int nr, nc;
+  
+          // Move in all 8 directions
+          // Right
+          nr = r, nc = c + 1;
+          if (nc < m && grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+  
+          // Left
+          nr = r, nc = c - 1;
+          if (nc >= 0 && grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+  
+          // Down
+          nr = r + 1, nc = c;
+          if (nr < n && grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+  
+          // Up
+          nr = r - 1, nc = c;
+          if (nr >= 0 && grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+  
+          // Bottom-Right (↘)
+          nr = r + 1, nc = c + 1;
+          if (nr < n && nc < m && grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+  
+          // Bottom-Left (↙)
+          nr = r + 1, nc = c - 1;
+          if (nr < n && nc >= 0 &&grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+  
+          // Top-Right (↗)
+          nr = r - 1, nc = c + 1;
+          if (nr >= 0 && nc < m && grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+  
+          // Top-Left (↖)
+          nr = r - 1, nc = c - 1;
+          if (nr >= 0 && nc >= 0 && grid[nr][nc] == 0 && dis[nr][nc] > 1 + d) {
+              dis[nr][nc] = 1 + d;
+              q.push({1 + d, {nr, nc}});
+          }
+      }
+  }
+
+
+
  
  
     
     
     
 
+
+
+// Bellman Ford for -ve Edge Weight Graphs 
+
+
+vector<int> bellmanFord(int V, vector<vector<int>>& edges, int src) {
+      vector<int> dis(V, INT_MAX);
+      dis[src] = 0;
+  
+      for (int i = 0; i < V; i++) {
+          int f = 0;
+  
+          for (auto &a : edges) {
+              int u = a[0], v = a[1], d = a[2];
+  
+              if (dis[u] != INT_MAX && dis[v] > dis[u] + d) {
+                  f = 1;
+                  dis[v] = dis[u] + d;
+              }
+          }
+      }
+  
+      for (auto &a : edges) {
+          int u = a[0], v = a[1], d = a[2];
+  
+          if (dis[u] != INT_MAX && dis[v] > dis[u] + d) {
+              return {-1};
+          }
+      }
+  
+      return dis;
+  }
 
 
      
@@ -322,5 +478,147 @@ vector<int> topological_sort_bfs(vector<int>adj[],vector<int>&indeg,int s,int n)
       
 
  
- 
+ // Floyd Wrashell (Multi Source Algo )
+
+void FloydWarshell(vector<vector<int>>& grid) {
+      int n=grid.size();
+      int m=grid[0].size();
+      
+      for(int i=0;i<n;i++){
+          for(int j=0;j<m;j++){
+              if(grid[i][j]==-1){
+                  grid[i][j]=1e9;
+              }
+          }
+      }
+      
+      for(int k=0;k<n;k++){
+      for(int i=0;i<n;i++){
+          for(int j=0;j<m;j++){
+              grid[i][j]=min(grid[i][j],grid[i][k]+grid[k][j]);
+          }
+      }
+      }
+      
+      
+      
+      for(int i=0;i<n;i++){
+          for(int j=0;j<m;j++){
+              if(grid[i][j]==1e9){
+                  grid[i][j]=-1;
+              }
+          }
+      }
+}
   
+
+
+
+
+
+
+
+
+
+// Disjoint Set Union (DSU)  BY Rank 
+
+
+
+class DSU{
+
+      vector<int>rank,parent;
+
+      public:  DSU(int n){
+          rank.resize(n+1,0);
+          parent.resize(n+1);
+
+          for(int i=0;i<=n;i++){
+            parent[i]=i;
+          }
+      }
+
+
+      int ulti_par(int node){
+            if(parent[node]==node) return node;
+
+            return parent[node]=ulti_par(parent[node]);  // Compression 
+      }
+
+      // Union By Rank
+      void Union(int u,int v){
+
+            int u_par_u=ulti_par(u);
+            int u_par_v=ulti_par(v);
+
+            if(u_par_u==u_par_v) return ;
+
+            if(rank[u_par_u]<rank[u_par_v]){
+                  parent[u_par_u]=u_par_v;
+            }
+            else if(rank[u_par_v]<rank[u_par_u]){
+                  parent[u_par_v]=u_par_u;
+            }
+
+            else{
+                  parent[u_par_v]=u_par_u;
+                  rank[u_par_u]++;
+            }
+      }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  int main(){
+ 
+      ios_base::sync_with_stdio(false);
+      cin.tie(NULL);
+   
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt","r",stdin);
+      freopen("output.txt","w",stdout);
+      #endif
+  
+  
+      //cout<<"testing";
+  
+  
+      
+  
+      DSU d(8);
+
+      d.Union(1,2);
+      d.Union(1,3);
+      d.Union(2,4);
+      d.Union(3,5);
+
+
+
+      d.Union(6,7);
+      d.Union(6,8);
+
+
+      cout<<d.ulti_par(5);
+
+  
+      
+      
+  
+      
+  
+  
+  }
