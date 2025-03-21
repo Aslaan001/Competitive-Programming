@@ -567,6 +567,53 @@ class DSU{
 };
 
 
+// dsu with component size calulation 
+
+class DSU {
+      vector<int> rank, parent, size;
+  
+  public:
+      DSU(int n) {
+          rank.resize(n, 0);
+          parent.resize(n);
+          size.resize(n, 1);  // Initialize size to 1
+  
+          for (int i = 0; i < n; i++) {
+              parent[i] = i;
+          }
+      }
+  
+      int ulti_par(int node) {
+          if (parent[node] == node) return node;
+          return parent[node] = ulti_par(parent[node]); // Path Compression
+      }
+  
+      // Union By Rank + Size
+      void Union(int u, int v) {
+          int u_par_u = ulti_par(u);
+          int u_par_v = ulti_par(v);
+  
+          if (u_par_u == u_par_v) return;
+  
+          if (rank[u_par_u] < rank[u_par_v]) {
+              parent[u_par_u] = u_par_v;
+              size[u_par_v] += size[u_par_u]; // Merge sizes
+          } else if (rank[u_par_v] < rank[u_par_u]) {
+              parent[u_par_v] = u_par_u;
+              size[u_par_u] += size[u_par_v];
+          } else {
+              parent[u_par_v] = u_par_u;
+              size[u_par_u] += size[u_par_v];
+              rank[u_par_u]++;
+          }
+      }
+  
+      int getSize(int node) {
+          return size[ulti_par(node)];
+      }
+  };
+
+
 
 
 
