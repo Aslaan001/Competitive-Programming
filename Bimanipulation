@@ -1,1 +1,56 @@
+// Generate all possible Or values for all subarray for given array in  0(n logn) 
 
+int fun(vector<int>& nums) {
+        set<int> res, prev;
+        for (int a : nums) {
+            set<int> curr;
+            curr.insert(a);
+            for (int x : prev) curr.insert(x | a);
+            prev = curr;
+            res.insert(curr.begin(), curr.end());
+        }
+
+        return res;
+    }
+
+
+// keep track of length of OR subaaaray min/max according to condition given with k
+
+
+int fun(const vector<int>& nums, int k) {
+    unordered_map<int, int> result;
+    unordered_map<int, int> prev;
+
+    for (int a : nums) {
+        unordered_map<int, int> curr;
+        curr[a] = 1;
+
+        for (auto &[val, len] : prev) {
+            int new_or = val | a;
+            if (curr.count(new_or)) {
+                curr[new_or] = min(curr[new_or], len + 1);    // always updating with min length psossible for duplicate OR values 
+            } else {
+                curr[new_or] = len + 1;
+            }
+        }
+
+        for (auto &[val, len] : curr) {
+            if (result.count(val)) {
+                result[val] = min(result[val], len);
+            } else {
+                result[val] = len;
+            }
+        }
+
+        prev = curr;
+    }
+
+    int m = INT_MAX;
+    for (auto &[val, len] : result) {
+        if (val >= k) {
+            m = min(m, len);
+        }
+    }
+
+    return m == INT_MAX ? -1 : m;
+}
