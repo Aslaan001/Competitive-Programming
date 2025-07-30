@@ -26,7 +26,8 @@ class SegmentTree {
 
     void push_lazy(int s, int e, int node) {
         if (lazy[node] != 0) {
-            tree[node] += lazy[node]; // For sum/min/max tree, modify this as needed
+            tree[node] += lazy[node]*(e-s+1);   // change accordingly it is for sum if nor sum the just according 
+                                                //  tree[node] = max(tree[node], lazy[node]);   // for maintaing max value 
 
             if (s != e) {
                 lazy[2 * node] += lazy[node];
