@@ -30,8 +30,8 @@ class SegmentTree {
                                                 //  tree[node] = max(tree[node], lazy[node]);   // for maintaing max value 
 
             if (s != e) {
-                lazy[2 * node] += lazy[node];
-                lazy[2 * node + 1] += lazy[node];
+                lazy[2 * node] += lazy[node];        // update here also   eg.  lazy[2 * node] = max(lazy[node],lazy[2 * node]);
+                lazy[2 * node + 1] += lazy[node];    // update here also   eg.  lazy[2 * node+1] = max(lazy[node],lazy[2 * node+1]);
             }
 
             lazy[node] = 0;
