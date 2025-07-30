@@ -105,3 +105,108 @@ public:
 };
 
 
+
+
+
+
+
+......................................// sorted vector Segement Tree  // .........................................................................................
+
+
+
+typedef vector<int> node_type;
+
+class SegmentTree {
+    vector<node_type> tree;
+    ll n;
+
+    node_type Merge(node_type l, node_type r) {
+        vector<int>v1;
+
+        int i=0;
+        int j=0;
+
+        while(i<l.size() && j<r.size()){
+            if(l[i]<=r[j]){
+                v1.push_back(l[i]);
+                i++;
+            }
+            else{
+                v1.push_back(r[j]);
+                j++;
+            }
+        }
+
+        while(i<l.size()){
+            v1.push_back(l[i]);
+            i++;
+        }
+        while(j<r.size()){
+            v1.push_back(r[j]);
+            j++;
+        }
+
+        return v1;
+
+    }
+
+    void build_tree(vector<int> &nums, int s, int e, int node) {
+        if (s == e) {
+            tree[node].push_back(nums[s]);
+            return;
+        }
+
+        ll mid = (s + e) / 2;
+        build_tree(nums, s, mid, 2 * node);
+        build_tree(nums, mid + 1, e, 2 * node + 1);
+        tree[node] = Merge(tree[2 * node], tree[2 * node + 1]);
+    }
+
+    int range_query(int s, int e, int node, int l, int r, int val) {
+    if (r < s || e < l) return 0;
+    if (l <= s && e <= r) {
+        return lower_bound(tree[node].begin(), tree[node].end(), val) - tree[node].begin();
+    }
+
+    int mid = (s + e) / 2;
+    return range_query(s, mid, 2 * node, l, r, val) + range_query(mid + 1, e, 2 * node + 1, l, r, val);
+}
+
+
+
+    void update_tree(int s, int e, int node, int idx, int val) {
+        
+
+        if (s == e) {
+            tree[node].erase(lower_bound(tree[node].begin(), tree[node].end(), val));
+            return;
+        }
+
+        ll mid = (s + e) / 2;
+        if (idx <= mid) update_tree(s, mid, 2 * node, idx, val);
+        else update_tree(mid + 1, e, 2 * node + 1, idx, val);
+
+        tree[node] = Merge(tree[2 * node], tree[2 * node + 1]);
+    }
+
+
+public:
+    SegmentTree(vector<int> &nums) {
+        n = nums.size();
+        tree.resize(4 * n);
+        build_tree(nums, 0, n - 1, 1);
+    }
+
+    int query(int l, int r ,int val) {
+        return range_query(0, n - 1, 1, l, r,val);
+    }
+
+
+     void update(int idx, int val) {
+        update_tree(0, n - 1, 1, idx, val);
+    }
+
+};
+
+
+
