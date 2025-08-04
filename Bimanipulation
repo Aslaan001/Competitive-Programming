@@ -14,6 +14,10 @@ int fun(vector<int>& nums) {
     }
 
 
+
+
+
+
 // keep track of length of OR subaaaray min/max according to condition given with k
 
 
