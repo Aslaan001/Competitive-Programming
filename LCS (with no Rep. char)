@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+int solve(int i,int j,int kk,string &s,string &t){
+    if(i>=s.size() || j>=t.size()) return 0;
+    
+    int m=0;
+    
+    if(s[i]==t[j]){
+        int ll=s[i]-'a';
+        
+        int vl=1<<ll;
+        
+        if((vl&kk)==0){
+            int a=1+solve(i+1,j+1,kk|vl,s,t);
+            m=max(m,a);
+        }
+    }
+    
+    int a=solve(i+1,j,kk,s,t);
+    int b=solve(i,j+1,kk,s,t);
+    
+    m=max(m,max(a,b));
+    
+    return m;
+}
+
+
+void fun(string s,string t){
+    cout<<solve(0,0,0,s,t);
+}
+
+int main(){
+    
+    string s,t;
+    cin>>s>>t;
+    fun(s,t);
+}
