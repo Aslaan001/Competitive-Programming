@@ -1,0 +1,73 @@
+//Position this line where user code will be pasted.
+
+
+void DFS(int u,vector<int>adj[],vector<int>&vis,vector<int>&v1){
+    vis[u]=1;
+    
+    for(auto a:adj[u]){
+        if(vis[a]==0){
+            DFS(a,adj,vis,v1);
+        }
+    }
+    v1.push_back(u);
+}
+
+
+void fun(int u,vector<int>adj[],vector<int>&vis){
+    vis[u]=1;
+    for(auto a:adj[u]){
+        if(vis[a]==0){
+            fun(a,adj,vis);
+        }
+    }
+}
+
+
+
+class Solution {
+  public:
+    int kosaraju(vector<vector<int>> &nums) {
+       
+       int n=nums.size();
+       
+       vector<int>adj[n+1];
+       vector<int>adj2[n+1];
+       vector<int>vis(n+1,0),vis2(n+1,0);
+       
+       vector<int>rev;
+       
+       for(int i=0;i<nums.size();i++){
+           for(auto a:nums[i]){
+           adj[i].push_back(a);
+           adj2[a].push_back(i);
+           }
+       }
+       
+       for(int i=0;i<n;i++){
+           if(vis[i]==0){
+               DFS(i,adj,vis,rev);
+           }
+       }
+       
+       
+       reverse(rev.begin(),rev.end());
+       
+       
+       
+       int kk=0;
+       
+       for(auto a:rev){
+           if(vis2[a]==0){
+               fun(a,adj2,vis2);
+               kk++;
+           }
+       }
+       
+       
+       return kk;
+       
+       
+       
+        
+    }
+};
